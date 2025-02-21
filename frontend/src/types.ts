@@ -1,4 +1,9 @@
-export type PipelineRunStatus = 'pending' | 'running' | 'completed' | 'failed' | 'cancelled'
+export type PipelineRunStatus =
+  | 'pending'
+  | 'running'
+  | 'completed'
+  | 'failed'
+  | 'cancelled'
 export type LogLevel = 'DEBUG' | 'INFO' | 'WARNING' | 'ERROR'
 
 export interface LogEntry {
@@ -68,6 +73,32 @@ export interface PipelineRun {
   start_time: Date
   duration: number
   tasks_run: TaskRun[]
+  user_info?: UserInfo
+  token_info?: TokenInfo
+}
+
+export interface TokenInfo {
+  access_token: string
+  expires_in: number
+  id_token: string
+  scope: string
+  token_type: string
+  expires_at: number
+  userinfo: UserInfo
+}
+
+export interface UserInfo {
+  iss: string
+  aud: string[]
+  iat: number
+  exp: number
+  auth_time: number
+  nonce: string
+  at_hash: string
+  sub: string
+  name: string
+  email: string
+  given_name: string
 }
 
 export interface WhoamiResponse {

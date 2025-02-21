@@ -1,5 +1,6 @@
 from typing import Any, Dict, Optional, Tuple
 from datetime import datetime, timedelta
+from fastapi import Request
 
 from apscheduler.executors.asyncio import AsyncIOExecutor
 from apscheduler.job import Job
@@ -83,7 +84,10 @@ orchestrator = _Orchestrator()
 
 
 async def run_pipeline_now(
-    pipeline: Pipeline, trigger: Optional[Trigger] = None, params: Any = None
+    pipeline: Pipeline,
+    trigger: Optional[Trigger] = None,
+    params: Any = None,
+    request: Optional[Request] = None,
 ) -> PipelineRun:
     trigger_id = trigger.id if trigger else MANUAL_TRIGGER_ID
 
@@ -93,6 +97,8 @@ async def run_pipeline_now(
             pipeline_id=pipeline.id,
             trigger_id=trigger_id,
             status=PipelineRunStatus.PENDING,
+            user_info=request.session.get("user") if request else None,
+            token_info=request.session.get("token") if request else None,
         )
     )
 

@@ -141,6 +141,31 @@ const RunViewPage = () => {
             </div>
           </Flex>
         </Card>
+
+        {run.user_info && <Card>
+          <Flex className="items-start">
+            <Text>Triggered By</Text>
+          </Flex>
+
+          <Flex>
+            <Metric>
+              {run.user_info?.given_name}
+
+            </Metric>
+          </Flex>
+
+          <Flex alignItems="start" className="mt-5">
+            <div>
+              <Text>
+                <Bold>
+                  Auth Time
+                </Bold>
+              </Text>
+            </div>
+            <Text>{formatDateTime(new Date((run.user_info?.auth_time ?? 0) * 1000))}</Text>
+          </Flex>
+
+        </Card>}
       </Grid>
 
       <div className="mt-6">

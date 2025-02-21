@@ -1,5 +1,5 @@
 from typing import Any, Dict, Optional
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, ValidationError
 
@@ -62,7 +62,7 @@ class PipelineRunInput(BaseModel):
 
 
 @router.post("/{pipeline_id}/run")
-async def run_pipeline(pipeline_id: str, body: PipelineRunInput) -> PipelineRun:
+async def run_pipeline(pipeline_id: str, body: PipelineRunInput, request: Request) -> PipelineRun:
     if not (pipeline := orchestrator.get_pipeline(pipeline_id)):
         raise HTTPException(404, f"The pipeline with ID {pipeline_id} doesn't exist")
 
@@ -78,7 +78,7 @@ async def run_pipeline(pipeline_id: str, body: PipelineRunInput) -> PipelineRun:
 
         trigger = triggers[0]
 
-        return await run_pipeline_now(pipeline, trigger)
+        return await run_pipeline_now(pipeline, trigger, request=request)
     else:
         if pipeline.params:
             try:
@@ -89,4 +89,4 @@ async def run_pipeline(pipeline_id: str, body: PipelineRunInput) -> PipelineRun:
                     detail=exc.errors(),
                 )
 
-        return await run_pipeline_now(pipeline, params=body.params)
+        return await run_pipeline_now(pipeline, params=body.params, request=request)

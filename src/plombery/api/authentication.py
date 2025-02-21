@@ -92,6 +92,7 @@ def build_auth_router(app: FastAPI) -> APIRouter:
 
         if user:
             request.session["user"] = dict(user)
+            request.session["token"] = token
 
         return RedirectResponse(url=str(settings.frontend_url))
 

@@ -1,6 +1,5 @@
-from typing import List
+from typing import List, Optional
 from datetime import datetime
-
 from pydantic import BaseModel, Field
 
 from plombery.schemas import PipelineRunStatus, TaskRun
@@ -12,7 +11,8 @@ class PipelineRunBase(BaseModel):
     status: PipelineRunStatus
     start_time: datetime
     tasks_run: List[TaskRun] = Field(default_factory=list)
-
+    user_info: Optional[dict] = None
+    token_info: Optional[dict] = None
     class Config:
         from_attributes = True
 

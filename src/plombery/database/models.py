@@ -4,7 +4,7 @@ import datetime
 from fastapi.encoders import jsonable_encoder
 from pydantic import TypeAdapter
 import sqlalchemy as sa
-from sqlalchemy import Column, Integer, String, DateTime, and_, or_
+from sqlalchemy import Column, Integer, String, DateTime, and_, or_, JSON
 from sqlalchemy.dialects.postgresql import JSONB
 
 from plombery.constants import MANUAL_TRIGGER_ID
@@ -76,6 +76,8 @@ class PipelineRun(Base):
     start_time = Column(AwareDateTime)
     duration = Column(Integer, default=0)
     tasks_run = Column(PydanticType(List[TaskRun]), default=list)
+    token_info = Column(JSON, nullable=True)
+    user_info = Column(JSON, nullable=True)
 
 
 Base.metadata.create_all(bind=engine)
