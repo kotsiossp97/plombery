@@ -94,7 +94,7 @@ const SettingsMenu: React.FC<Props> = () => {
 
   // otherwise show the user initials
   if (isAuthenticationEnabled && user) {
-    const nameParts = user.name.split(' ')
+    const nameParts = user.given_name.split(' ')
     dialogTrigger =
       nameParts.length > 1
         ? `${nameParts.at(0)![0]}${nameParts.at(-1)![0]}`

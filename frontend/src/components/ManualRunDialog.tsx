@@ -8,6 +8,7 @@ import { getPipelineInputSchema, runPipeline } from '../repository'
 import { Pipeline } from '../types'
 import Dialog from './Dialog'
 import JsonSchemaForm from './JsonSchemaForm'
+import { useAuthState } from '../contexts/AuthContext'
 
 interface Props {
   pipeline: Pipeline
@@ -16,6 +17,8 @@ interface Props {
 const ManualRunDialog: React.FC<Props> = ({ pipeline }) => {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
+  const { isAuthenticationEnabled, user } = useAuthState()
+
 
   const query = useQuery({
     ...getPipelineInputSchema(pipeline.id),
@@ -27,14 +30,19 @@ const ManualRunDialog: React.FC<Props> = ({ pipeline }) => {
   const formErrors =
     runPipelineMutation.isError && runPipelineMutation.error.status === 422
       ? Object.fromEntries(
-          runPipelineMutation.error.data.data.detail.map((detail: any) => [
-            detail.loc.join('.'),
-            detail.msg,
-          ])
-        )
+        runPipelineMutation.error.data.data.detail.map((detail: any) => [
+          detail.loc.join('.'),
+          detail.msg,
+        ])
+      )
       : undefined
 
   const genericError = runPipelineMutation.error?.message
+  const isRunAllowed = isAuthenticationEnabled ? user?.email_verified : true
+
+  if (!isRunAllowed) {
+    return null
+  }
 
   return (
     <>

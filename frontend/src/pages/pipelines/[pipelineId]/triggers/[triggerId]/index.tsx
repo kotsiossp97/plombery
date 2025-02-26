@@ -25,10 +25,13 @@ import { MANUAL_TRIGGER } from '@/constants'
 import { getPipeline, listRuns, runPipeline } from '@/repository'
 import { Trigger } from '@/types'
 import PipelineHttpRun from '@/components/help/PipelineHttpRun'
+import { useAuthState } from '../../../../../contexts/AuthContext'
 
 const TriggerView: React.FC = () => {
   const navigate = useNavigate()
   const urlParams = useParams()
+  const { isAuthenticationEnabled, user } = useAuthState()
+
   const pipelineId = urlParams.pipelineId as string
   const triggerId = urlParams.triggerId as string
 
@@ -59,11 +62,13 @@ const TriggerView: React.FC = () => {
     ? pipeline.triggers.find((trigger) => trigger.id === triggerId)
     : MANUAL_TRIGGER
 
+  const isRunAllowed = isAuthenticationEnabled ? user?.email_verified : true
+
   if (!trigger) {
     return <div>Trigger not found</div>
   }
 
-  const runTriggerButton = isManualTrigger ? (
+  const runTriggerButton = isRunAllowed ? isManualTrigger ? (
     <ManualRunDialog pipeline={pipeline} />
   ) : (
     <Button
@@ -77,7 +82,7 @@ const TriggerView: React.FC = () => {
     >
       Run
     </Button>
-  )
+  ) : <></>
 
   return (
     <PageLayout

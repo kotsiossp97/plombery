@@ -5,6 +5,8 @@ import { getCurrentUser, logout } from '@/repository'
 type User = {
   email: string
   name: string
+  email_verified: boolean
+  given_name: string
 } | null
 
 type AuthState = {
