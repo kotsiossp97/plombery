@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             payload: {
               user,
               isAuthenticationEnabled: is_authentication_enabled,
-
+              project_name: project_name,
             },
           })
         }
