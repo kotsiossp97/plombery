@@ -49,7 +49,6 @@ export class Pipeline {
     const sortedTriggers = this.triggers
       .filter((trigger) => !!trigger.next_fire_time)
       .sort((a, b) => a.next_fire_time!.getTime() - b.next_fire_time!.getTime())
-
     const earliestTrigger = sortedTriggers[0]
 
     if (earliestTrigger) {

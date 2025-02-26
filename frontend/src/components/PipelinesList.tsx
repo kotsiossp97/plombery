@@ -43,10 +43,10 @@ const PipelinesList: React.FC = () => {
                 <Text className="truncate">Next fire time</Text>
                 <Text className="truncate">
                   <Bold>
-                    {formatDistanceToNow(pipeline.getNextFireTime()!, {
+                    {pipeline.getNextFireTime() ? formatDistanceToNow(pipeline.getNextFireTime()!, {
                       addSuffix: true,
                       includeSeconds: true,
-                    })}
+                    }) : "Never"}
                   </Bold>
                 </Text>
               </div>

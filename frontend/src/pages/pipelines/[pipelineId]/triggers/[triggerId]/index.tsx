@@ -122,6 +122,13 @@ const TriggerView: React.FC = () => {
           </ListItem>
 
           <ListItem>
+            <Text>Paused</Text>
+            <Text>
+              <Bold>{trigger.paused ? "Yes" : "No"}</Bold>
+            </Text>
+          </ListItem>
+
+          <ListItem>
             <Text>Params</Text>
             {trigger.params ? (
               <TriggerParamsDialog trigger={trigger} />

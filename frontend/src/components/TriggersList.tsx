@@ -51,10 +51,10 @@ const TriggersList: React.FC<Props> = ({ pipeline }) => {
                 <Text>{trigger.schedule}</Text>
               </TableCell>
               <TableCell>
-                {formatDistanceToNow(pipeline.getNextFireTime()!, {
+                {pipeline.getNextFireTime() ? formatDistanceToNow(pipeline.getNextFireTime()!, {
                   includeSeconds: true,
                   addSuffix: true,
-                })}
+                }) : "Never"}
               </TableCell>
             </TableRow>
           ))}
