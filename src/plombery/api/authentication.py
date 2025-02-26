@@ -21,6 +21,7 @@ def build_auth_router(app: FastAPI) -> APIRouter:
             return {
                 "user": None,
                 "is_authentication_enabled": False,
+                "project_name": settings.project_name,
             }
 
         return router
@@ -76,6 +77,7 @@ def build_auth_router(app: FastAPI) -> APIRouter:
         return {
             "user": user,
             "is_authentication_enabled": True,
+            "project_name": settings.project_name,
         }
 
     @router.get("/redirect")

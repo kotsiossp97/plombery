@@ -104,4 +104,5 @@ export interface UserInfo {
 export interface WhoamiResponse {
   user: any
   is_authentication_enabled: boolean
+  project_name?: string
 }

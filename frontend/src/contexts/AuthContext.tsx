@@ -13,10 +13,11 @@ type AuthState = {
   isLoading: boolean
   logout: () => Promise<any>
   user: User
+  project_name?: string
 }
 
 type Action =
-  | { type: 'LOGIN'; payload: { user: User; isAuthenticationEnabled: boolean } }
+  | { type: 'LOGIN'; payload: { user: User; isAuthenticationEnabled: boolean; project_name?: string } }
   | { type: 'POPULATE'; payload: User }
   | { type: 'LOGOUT' }
   | { type: 'STOP_LOADING' }
@@ -25,7 +26,7 @@ const StateContext = createContext<AuthState>({
   isAuthenticated: false,
   isAuthenticationEnabled: true,
   isLoading: true,
-  logout: async () => {},
+  logout: async () => { },
   user: null,
 })
 
@@ -37,6 +38,7 @@ const reducer = (state: AuthState, action: Action): AuthState => {
         isAuthenticated: true,
         isAuthenticationEnabled: action.payload.isAuthenticationEnabled,
         user: action.payload.user,
+        project_name: action.payload.project_name,
       }
     case 'LOGOUT':
       return {
@@ -49,9 +51,9 @@ const reducer = (state: AuthState, action: Action): AuthState => {
         ...state,
         user: action.payload
           ? {
-              ...state.user,
-              ...action.payload,
-            }
+            ...state.user,
+            ...action.payload,
+          }
           : null,
       }
     case 'STOP_LOADING':
@@ -79,7 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const { is_authentication_enabled, user } = await getCurrentUser()
+        const { is_authentication_enabled, user, project_name } = await getCurrentUser()
 
         if ((is_authentication_enabled && user) || !is_authentication_enabled) {
           dispatch({
@@ -87,6 +89,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             payload: {
               user,
               isAuthenticationEnabled: is_authentication_enabled,
+
             },
           })
         }

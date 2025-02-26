@@ -5,15 +5,17 @@ import PipelinesList from '@/components/PipelinesList'
 import RunsList from '@/components/RunsList'
 import { useQuery } from '@tanstack/react-query'
 import { listRuns } from '@/repository'
+import { useAuthState } from '@/contexts/AuthContext'
 
 const HomePage: React.FC = () => {
   const runsQuery = useQuery(listRuns())
+  const { project_name } = useAuthState()
 
   return (
     <PageLayout
       header={
         <>
-          <Title>Plombery</Title>
+          <Title>Plombery {project_name ? `- ${project_name}` : ""}</Title>
         </>
       }
     >
