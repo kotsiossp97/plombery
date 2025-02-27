@@ -25,6 +25,7 @@ class AuthSettings(BaseModel):
 class Settings(BaseSettings):
     auth: Optional[AuthSettings] = None
     database_url: str = "sqlite:///./plombery.db"
+    run_data_path: str = Path.cwd().as_posix()
     notifications: Optional[List[NotificationRule]] = None
     frontend_url: AnyHttpUrl = AnyHttpUrl("http://localhost:8000")
     allowed_origins: Union[List[AnyHttpUrl], Literal["*"]] = "*"

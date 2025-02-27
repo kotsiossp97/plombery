@@ -7,6 +7,7 @@ from apscheduler.job import Job
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.date import DateTrigger
 
+from plombery.config import settings
 from plombery.constants import MANUAL_TRIGGER_ID
 from plombery.database.models import PipelineRun
 from plombery.database.repository import create_pipeline_run
@@ -90,6 +91,11 @@ async def run_pipeline_now(
     request: Optional[Request] = None,
 ) -> PipelineRun:
     trigger_id = trigger.id if trigger else MANUAL_TRIGGER_ID
+    user_info = None
+    token_info = None
+    if settings.auth and request is not None:
+        user_info = request.session.get("user")
+        token_info = request.session.get("token")
 
     pipeline_run = create_pipeline_run(
         PipelineRunCreate(
@@ -97,8 +103,8 @@ async def run_pipeline_now(
             pipeline_id=pipeline.id,
             trigger_id=trigger_id,
             status=PipelineRunStatus.PENDING,
-            user_info=request.session.get("user") if request else None,
-            token_info=request.session.get("token") if request else None,
+            user_info=user_info,
+            token_info=token_info,
         )
     )
 
