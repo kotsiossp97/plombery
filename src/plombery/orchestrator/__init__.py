@@ -52,8 +52,8 @@ class _Orchestrator:
                 # job should be run more than once in succession
                 coalesce=True,
                 # Jobs will be run even if they arrive 1 min late
-                misfire_grace_time=timedelta(minutes=1).seconds,
-                max_instances=10_000,
+                misfire_grace_time=timedelta(minutes=settings.misfire_grace_mins).seconds,
+                max_instances=settings.scheduler_job_max_instances,
             )
 
     def get_pipeline(self, pipeline_id: str):
