@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     allowed_origins: Union[List[AnyHttpUrl], Literal["*"]] = "*"
     project_name: str = ""
     misfire_grace_mins: int = 1
-    scheduler_job_max_instances: int = 100_000
+    scheduler_job_max_instances: int = 10_000
 
     model_config = SettingsConfigDict(
         env_file=BASE_SETTINGS_FOLDER / ".env",
