@@ -54,7 +54,6 @@ class _Orchestrator:
                 # Jobs will be run even if they arrive 1 min late
                 misfire_grace_time=timedelta(minutes=settings.misfire_grace_mins).seconds,
                 max_instances=settings.scheduler_job_max_instances,
-                replace_existing=True,
             )
 
     def get_pipeline(self, pipeline_id: str):
@@ -125,7 +124,6 @@ async def run_pipeline_now(
             max_instances=settings.scheduler_job_max_instances,
             misfire_grace_time=None,
             trigger=DateTrigger(),
-            replace_existing=True,
         ),
         [datetime.now()],
     )
