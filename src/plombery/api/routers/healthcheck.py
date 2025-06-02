@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Response
+from fastapi import APIRouter
 
 router = APIRouter(
     prefix="/healthcheck",
@@ -8,4 +8,4 @@ router = APIRouter(
 
 @router.get("/")
 def health_check():
-    return Response(content={"status": "ok"}, media_type="application/json")
+    return {"status": "ok"}
